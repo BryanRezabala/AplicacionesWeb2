@@ -4,19 +4,19 @@ const prisma = new PrismaClient();
 //crear evento para ingresar los datos a las tablas
 const createEvento = async () => {
   const evento = await prisma.evento.create({
-    data: {
+    data: { //datos de evento
       fechaEvento: new Date(),
       horaEvento: '15:00',
-      descripcionEvento: 'Descripción del evento',
+      descripcionEvento: 'Evento de exposicion de arte',
       asientosEvento: 100,
       estadoEvento: 'Activo',
-      tipoEvento: {
+      tipoEvento: { //datos de tipoEvento
         create: {
-          nombreTipoEvento: 'Concierto',
-          descripcionTipoEvento: 'Concierto en vivo',
+          nombreTipoEvento: 'Exposicion',
+          descripcionTipoEvento: 'se expondran piezas de arte para la venta',
         },
       },
-      reservas: {
+      reservas: { //datos de reserva
         create: {
           fechaReserva: new Date(),
           horaReserva: '14:30',
@@ -46,7 +46,7 @@ const updateEvento = async () => {
       id: 1,
     },
     data: {
-      descripcionEvento: 'Nueva descripción del evento',
+      descripcionEvento: 'evento de musica para caridad',
     },
   });
   console.log(updatedEvento);
