@@ -1,0 +1,41 @@
+generator client{
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+// Definición de la entidad transaccional "Evento"
+model Evento {
+  id                Int              @id @default(autoincrement())
+  fechaEvento       DateTime
+  horaEvento        String
+  descripcionEvento String
+  asientosEvento    Int
+  estadoEvento      String
+  reservas          ReservaEvento[]
+  tipoEvento        TipoEvento       @relation(fields: [idTipoEvento], references: [id])
+  idTipoEvento      Int
+}
+
+// Definición de la entidad foranea "ReservaEvento"
+model ReservaEvento {
+  id                 Int        @id @default(autoincrement())
+  fechaReserva       DateTime
+  horaReserva        String
+  descripcionReserva String
+  asientosReserva    Int
+  precioReserva      Float
+  evento             Evento     @relation(fields: [idEvento], references: [id])
+  idEvento           Int
+}
+
+// Definición de la entidad foranea "TipoEvento"
+model TipoEvento {
+  id                    Int        @id @default(autoincrement())
+  nombreTipoEvento      String
+  descripcionTipoEvento String
+  eventos               Evento[]
+}
