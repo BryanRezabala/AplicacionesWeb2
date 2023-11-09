@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+
+model Organizadores {
+  id                      Int           @id @default(autoincrement())
+  nombre                  String
+  empresa                 String
+  correo                  String        @unique
+  numero                  String        
+  evento                  Evento[]
+}
+
+model Evento {
+  id                      Int           @id @default(autoincrement())
+  nombre                  String
+  fecha                   String?
+  horaini                 String
+  horafin                 String
+  descripcion             String
+  zona                    String
+  finalidad               String
+  organizador             Organizadores @relation(fields: [organizadorId], references: [id])
+  organizadorId           Int
+  ventaentrada            VentaEntrada @relation(fields: [ventaentradaId], references: [id])
+  ventaentradaId          Int
+  tipoevento              TipoEvento @relation(fields: [tipoeventoId], references: [id])
+  tipoeventoId            Int
+  cliente                 Clientes @relation(fields: [clienteId], references: [id])
+  clienteId               Int
+}
+
+model Tipoentradas {
+  id                      Int         @id @default(autoincrement())
+  tipo                    String
+  ubicacion_entrada       String
+  estado                  String
+  tipoentrada             VentaEntrada[]
+}
+
+model VentaEntrada {
+  id                      Int           @id @default(autoincrement())
+  precio                  String
+  metodo_pago             String
+  reserva                 String
+  precio_total            String
+  evento                  Evento[]
+  tipoentrada             Tipoentradas @relation(fields: [tipoentradaId], references: [id])
+  tipoentradaId           Int
+}
+
+
+model TipoEvento{
+  id                      Int @id @default(autoincrement())
+  tipo                    String 
+  recaudacion             String
+  evento                  Evento[]
+}
+
+model Clientes {
+  id                      Int             @id @default(autoincrement())
+  nombre_cliente          String
+  direccion_cliente       String
+  numero_cliente          String
+  correo_cliente          String
+  evento                  Evento[]
+}
